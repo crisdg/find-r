@@ -21,14 +21,42 @@ class SearchResult extends Component {
   };
 
   componentWillReceiveProps = (e) => {
-    let artistId = e.artistId;
+    let search = e.busqueda;
 
-    this.fetchData(
-      "https://deezerdevs-deezer.p.rapidapi.com/artist/" + artistId + "/related"
+    this.fetchDataArtist(
+      "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + search
     );
   };
 
+  componentDidMount() {}
+
+  fetchDataArtist = (url) => {
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "x-rapidapi-key": "c5bec6501cmsh6f87851df3a24d1p10fb49jsnb908329e649b",
+        "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        this.setState({ artistId: data.data[0].artist["id"] });
+        let artistId = this.state.artistId;
+        this.fetchData(
+          "https://deezerdevs-deezer.p.rapidapi.com/artist/" +
+            artistId +
+            "/related"
+        );
+      })
+
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   fetchData = (url) => {
+    console.log(url);
     this.setState({
       loading: true,
     });

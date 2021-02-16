@@ -11,46 +11,20 @@ class PageSearchResult extends Component {
     artistId: "",
   };
 
-  componentWillMount() {
+  componentDidMount() {
     let search = this.props.history.location.search
       .substr(1)
       .replace("%20", " ");
 
-    this.fetchDataArtist(
-      "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + search
-    );
-
     this.setState({
       busqueda: search,
     });
-
-    console.log(search, "search desde willMounr PSR");
-    console.log(this.state.busqueda, "desde willmount PSR");
   }
 
-  fetchDataArtist = (url) => {
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "x-rapidapi-key": "c5bec6501cmsh6f87851df3a24d1p10fb49jsnb908329e649b",
-        "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ artistId: data.data[0].artist["id"] });
-      })
-
-      .catch((err) => {
-        console.error(err);
-      });
-  };
   handleChange = (e) => {
     this.setState({
       busqueda: e.target.value,
     });
-    console.log(this.state.busqueda, "desde page-search result handliChange");
-    console.log(e.target.value, "desde handleChange psr");
   };
 
   render() {
